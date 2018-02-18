@@ -72,14 +72,30 @@ const Dashboard = () => {
     // if their company id matches a certain companies id, then that company gets the number of messages the user sent added to their total messages?
     //
 
+    // give the companies array a list of companies with a new users array
     for(let a=0; a < Conversations.companies.length; a++) {
         companies.push(
             {
                 "name": Conversations.companies[a].name,
                 "id": Conversations.companies[a].id,
-                "users": []
+                "users": [],
+                "messagesPerMonth": {
+                    'january': 0,
+                    'february': 0,
+                    'march': 0,
+                    'april': 0,
+                    'may': 0,
+                    'june': 0,
+                    'july':0,
+                    'august':0,
+                    'september':0,
+                    'october': 0,
+                    'november': 0,
+                    'december':0
+                }     
             }
         )
+        // push each user to its respective company's array with a new conversations array
         for(let b=0; b < Conversations.users.length; b++) {
             if(Conversations.users[b].company_id === companies[a].id) {
                 companies[a].users.push(
@@ -90,7 +106,8 @@ const Dashboard = () => {
                         },
                         "company_id": Conversations.users[b].company_id,
                         "email": Conversations.users[b].email,
-                        "numConversations" : 0
+                        "conversations": []
+                        //"numConversations" : 0
                     }
                 )
             }
@@ -106,16 +123,65 @@ const Dashboard = () => {
         // if the email matches the users.email then users messagesNum++
         // company totalMessages = users.messageNum all added together
     }
+    
 
+    // push respective conversations to each companies individual user
     for(let a=0; a < companies.length; a++) {
         for(let b=0; b < companies[a].users.length; b++) {
             for(let c =0; c < Conversations.conversations.length; c++) {
                 if(Conversations.conversations[c].from === companies[a].users[b].email) {
-                    companies[a].users[b].numConversations++;
+                    companies[a].users[b].conversations.push(Conversations.conversations[c]);
+                    // companies[a].users[b].numConversations++;
                 }
             }
         }
     }
+
+    // for every companys conversations by month, loop thru each month
+    // loop thru every individuals conversations.
+    // if the conversation.date === month, increment conversations by month of that month by 1
+
+    // loop thru every conversation
+    // push each conversation to a companies array of months
+
+    // use this to run the messages per month against
+    const sampleObj = {
+       "messagesPerMonth": {
+            'january': 0,
+            'february': 0,
+            'march': 0,
+            'april': 0,
+            'may': 0,
+            'june': 0,
+            'july':0,
+            'august':0,
+            'september':0,
+            'october': 0,
+            'november': 0,
+            'december':0
+        }
+    }
+    const monthKeys = Object.keys(sampleObj.messagesPerMonth)
+
+    // for every month, go thru every company and increment messages per month if the date matches
+    for(let i = 0; i < monthKeys.length; i++) {
+        for(let a=0; a < companies.length; a++) {
+            for(let b=0; b < companies[a].users.length; b++) {
+                for(let c =0; c < companies[a].users[b].conversations.length; c++) {
+                    let date = moment(companies[a].users[b].conversations[c].date).format('MMMM').toLowerCase();
+                    if(date === monthKeys[i]) {
+                        companies[a].messagesPerMonth[monthKeys[i]]++;
+                    }
+                }
+            }
+        }
+    }
+
+    // for every month, loop thru all the conversations dates
+    // if their dates are equal to the current month (key), then increment value
+    // 
+
+    // for every conversation in every user in every company get the date of the conversation. then increment the company's conversations by month based on the date.
 
     console.log('companies:', companies)
     // somehow this actually gives me the "correct data"
