@@ -1,12 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import _ from 'lodash';
 import {companies, users, conversations} from '../ConversationTest.json';
 
 const Dashboard = () => {
-
-    function rankCompaniesByAmountOfMonths(companies, conversations, users, numMonths) {
-        return companies.map((company)=>{
+    function getCompaniesConversationsByMonth(companies, conversations, users, numMonths) {
+        return companies
+        .map((company)=>{
             let numConversations = users.filter((user)=>{
                 return user.company_id === company.id;
             }).map((user)=>{
@@ -16,10 +15,22 @@ const Dashboard = () => {
             }).reduce((a,b)=>a+b.length, 0);
             
             return {
+                companyId: company.id,
                 numConversations, 
-                companyId: company.id
             };
-        }).sort((a, b) => b.numConversations - a.numConversations);
+        })
+    }
+
+    function rankCompaniesByAmountOfMonths(companies, conversations, users, numMonths) {
+        return getCompaniesConversationsByMonth(companies, conversations, users, numMonths)
+        .sort((a, b) => b.numConversations - a.numConversations);
+    }
+
+    function getTotalConversationsByMonth(companies, conversations, users, numMonths) {
+        return getCompaniesConversationsByMonth(companies, conversations, users, numMonths)
+        .reduce((a, b)=>{
+            return a + b.numConversations
+        }, 0)
     }
 
     function getTopFiveUsers(companies, conversations, users) {
@@ -43,8 +54,8 @@ const Dashboard = () => {
         });
     }
 
-    
-    let buddies = users.map((user)=>{
+    // get a list of the buddies in order of most conversations
+    let buddiesObj = users.map((user)=>{
         return conversations.filter((conversation)=>{
             return user.email === conversation.from;
         })
@@ -56,46 +67,29 @@ const Dashboard = () => {
         .reduce((acc, value)=>{
             return acc.concat(value.recipients);
         }, [])
-        .reduce((tally,vote)=>{
-            !tally[vote] ? tally[vote] = 1 : tally[vote] += 1
-            // tally[vote].sender = user.email;
-            return tally;
-        }, [])
+        .map((recipient)=>{
+            // turn this into a little function?
+            let buddy = [recipient, user.email].sort().join('%');
+            return buddy;
+        })
     })
+    .reduce((acc, value)=>{
+        return acc.concat(value)
+    }, [])
+    .reduce(groupByDuplicates, [])
+  
 
-    // let babies = _.flatMap(buddies)
+    let buddiesArray = Object.keys(buddiesObj)
+        .map(key => ({[key] : buddiesObj[key]}))
+        .sort((a,b)=>{
+            return Object.values(b)[0] - Object.values(a)[0]
+        });
 
-    // let babies = buddies.reduce((acc, value)=>{
-    //     console.log('value', Object.values(value))
-    //     return acc.concat({
-    //         count: Object.values(value)[index].count,
-    //         buddies: [
-    //             Object.values(value).sender, Object.keys(value)[index]
-    //         ]
-    //     });
-    // }, [])
-
-    let babies = buddies.map((user)=>{
-        console.log('user:', user);
-        user.reduce((acc, value)=>{
-            console.log('value:', value);
-            return acc.concat(value);
-        }, [])
-    })
-
-    function groupByDuplicate(tally, vote) {
-        !tally[vote] ? tally[vote] = 1 : tally[vote] += 1
-        return tally;
+    // takes duplicates and stores them in an object with the name as the key and a value of the number of duplicates
+    function groupByDuplicates(acc, value) {
+        !acc[value] ? acc[value] = 1 : acc[value] += 1
+        return acc;
     }
-
-    console.log(babies);
-
-    // companies.users.map((user)=>{
-    //     let conversations = Conversations.conversations.filter((conversation)=>{
-    //         return conversation.from === user.email
-    //     })
-    //     console.log('conversations', conversations)
-    // })
 
     return (
         <div>
