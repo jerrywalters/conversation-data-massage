@@ -4,7 +4,7 @@ import {companies, users, conversations} from '../ConversationTest.json';
 
 const PercentInactiveUsers = (props) => {
 
-    // gets percentage as integer
+    // gets percentage, then round it to nearest integer
     function getPercentageAsInteger(total, diff) {
         return Math.round((diff/total)*100);
     }
@@ -13,15 +13,18 @@ const PercentInactiveUsers = (props) => {
     function getInactiveUsersByMonth(companies, conversations, users, numMonths) {
         return companies
         .map((company)=>{
+            // get only the users belonging to a given company
             const userConversations = users.filter((user)=>{
                 return user.company_id === company.id;
             })
             .map((user)=>{
+                // get only conversations within the last n months from current date
                 return conversations.filter((conversation)=>{
                     return user.email === conversation.from && moment().subtract(numMonths, 'months').diff(conversation.date) < 0;
                 })
             })
 
+            // use these to calculate percentage of inactive users
             const numUsers = userConversations.length;
             const numInactive = userConversations.filter(convo=>convo.length===0).length;
 
@@ -34,6 +37,7 @@ const PercentInactiveUsers = (props) => {
     }
 
     let percentInactive = getInactiveUsersByMonth(companies, conversations, users, props.numMonths);
+    // it'd be possible to turn this into a component and pass the company through as props, but unnecessary for now
     let percentInactiveList = percentInactive.map((company)=> {
         return (
             <li className="card">

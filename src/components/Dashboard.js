@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {companies, users, conversations} from '../ConversationTest.json';
+
 import 'bulma/css/bulma.css';
 
 import TopFive from './TopFive';
@@ -12,7 +13,7 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         // set a very basic version of application state
-        // I'd normally use redux to manage state, but here I only want to track the number of months we are filtering by and hav no intention of scaling this
+        // I'd normally use redux to manage state, but here I only want to track the number of months we are filtering by with no intent to scale
         this.state = {monthsFilter: 24};
     
         // Gotta bind 'this' for it to correctly reference the correct object in the callback
@@ -24,8 +25,10 @@ class Dashboard extends Component {
       }
 
     render() {
+        // use this to pass state down thru props
         const numMonths = this.state.monthsFilter;
 
+        // this function takes in the JSON containing companies, conversations, users, and a number of months, and returns a new object containing the company name, id, and total number of conversations over n months
         function getCompaniesConversationsByMonth(companies, conversations, users, numMonths) {
             return companies
             .map((company)=>{
@@ -47,6 +50,7 @@ class Dashboard extends Component {
             })
         }
 
+        // this function was broken out of getCompaniesConversations... for resusability. it reduces the total conversations by company to an integer containing the total number of conversations for n months
         function getTotalConversationsByMonth(companies, conversations, users, numMonths) {
             return getCompaniesConversationsByMonth(companies, conversations, users, numMonths)
             .reduce((a, b)=>{

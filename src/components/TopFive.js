@@ -3,11 +3,13 @@ import moment from 'moment';
 import {companies, users, conversations} from '../ConversationTest.json';
 
 const TopFive = (props) => {
+
+    // gets an array of companies, containing all of their users with conversations, sorted by number of conversations in n months
     function getCompaniesWithUsers(companies, conversations, users, numMonths) {
         return companies
         .map((company)=>{
-            const allUsers = users
-            .filter((user)=>{
+            // get only the users belonging to a given company
+            const allUsers = users.filter((user)=>{
                 return user.company_id === company.id;
             })
             .map((user)=>{
@@ -22,6 +24,7 @@ const TopFive = (props) => {
             })
             .sort((a,b) => b.numConversations - a.numConversations)
 
+            // assign the company a totalConversations property to filter by
             let totalConversations = allUsers.reduce((a,b)=>a+b.numConversations, 0)
 
             return {
@@ -32,10 +35,13 @@ const TopFive = (props) => {
         })
     }
 
+    // sort companies by their number of conversations
     function getTop5CompaniesByMonth(companies, conversations, users, numMonths) {
         return getCompaniesWithUsers(companies, conversations, users, numMonths)
         .sort((a, b) => b.totalConversations - a.totalConversations)
+        // now only get the top 5 most active companies
         .slice(0,5)
+        // additionally, only get the top 5 most active users in a given company
         .map((company)=>{
             return {
                 ...company,
@@ -45,6 +51,7 @@ const TopFive = (props) => {
     }
 
     let top5Companies = getTop5CompaniesByMonth(companies, conversations, users, props.numMonths);
+    // this is another example of where I could probably pass the props into a component to abstract some of this logic
     let top5List = top5Companies.map((company)=>{
         const name = company.name;
         const users = company.allUsers.map((user)=>{
