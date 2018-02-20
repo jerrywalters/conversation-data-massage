@@ -55,17 +55,21 @@ const TopFive = (props) => {
     let top5List = top5Companies.map((company)=>{
         const name = company.name;
         const users = company.allUsers.map((user)=>{
-            return <li>{user.name}</li>
+            return (
+                <li className="is-size-6">
+                    <p className="is-size-6">{user.name}</p>
+                </li>
+            )
         })
         return (
             <li className="column is-one-fifth">
                 <div className="card">
                     <div className="card-header">
-                        <h2 className="card-header-title">{name}</h2>
+                        <h2 className="card-header-title is-size-5">{name}</h2>
                     </div>
                     <div className="card-content content">
-                    <h5 className="title has-text-grey-dark">Most Active Users:</h5>
-                        <ol>
+                        <h5 className="is-size-6 has-text-grey-dark">Top Users:</h5>
+                        <ol className="">
                             {users}
                         </ol>
                     </div>

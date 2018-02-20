@@ -2,6 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import {companies, users, conversations} from '../ConversationTest.json';
 
+import 'bulma/css/bulma.css';
+
 const Buddies = () => {
     // takes duplicates and stores them in an object with the name as the key and value pair containing the name and number of duplicates
     function groupByDuplicates(acc, value) {
@@ -24,9 +26,13 @@ const Buddies = () => {
             return acc.concat(value.recipients);
         }, [])
         .map((recipient)=>{
-            // combine the sender and recipient to an alphabetically sorted string of both their emails
-            const buddy = [recipient, user.email].sort().join('%');
-            return buddy;
+            // combine the sender and recipient to an alphabetically sorted string of both their names
+            // kind of dirty solution
+            const sender = `${user.name.first} ${user.name.last}`
+            const buddyArr = recipient.split('@')[0].split('.')
+            const buddy = `${buddyArr[0]} ${buddyArr[1]}`
+
+            return [buddy, sender].sort().join('%');
         })
     })
     .reduce((acc, value)=>{
@@ -50,14 +56,22 @@ const Buddies = () => {
         .map((buddy)=>{
             let buddies = Object.keys(buddy)[0]
             .split('%')
-            .join(' and ')
-            return <li>{buddies}</li>
+            // .join(' and ')
+            return (
+                <div className="column is-one-fifth has-text-centered">
+                    <div className="box">
+                        <p className="heading">{`${buddies[0]}`}</p>
+                        <p className="heading is-size-6">and</p>
+                        <p className="heading">{`${buddies[1]}`}</p>
+                    </div>
+                </div>
+            )
         })
 
     return (
-        <ol>
+        <div className="columns">
             {top5Buddies}
-        </ol>
+        </div>
     )
 }
 

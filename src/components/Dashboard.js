@@ -89,13 +89,13 @@ class Dashboard extends Component {
                             <p className="">Filter by:</p>
                             <div className="select">
                                 <select value={filterTop5} onChange={this.handleTop5}>
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                    <option value={4}>4</option>
-                                    <option value={5}>5</option>
-                                    <option value={6}>6</option>
-                                    <option value={24}>All Time</option>
+                                    <option value={1}>Last Month</option>
+                                    <option value={2}>Last 2 Months</option>
+                                    <option value={3}>Last 3 Months</option>
+                                    <option value={4}>Last 4 Months</option>
+                                    <option value={5}>Last 5 Months</option>
+                                    <option value={6}>Last 6 Months</option>
+                                <   option value={24}>All Time</option>
                                 </select>
                             </div>
                         </div>
@@ -104,20 +104,20 @@ class Dashboard extends Component {
                         numMonths={filterTop5}  
                     />
                 </section>
-                <section className="section">
-                    <h4 className="title is-4">Best Buds</h4>
+                <section className="section hero">
+                    <h4 className="title has-text-centered">Best Buds</h4>
                     <Buddies />
                 </section>
                 <section className="section">
                     <h4 className="title is-4">Percentage of Inactive Users by Company</h4>
                     <div className="select">
                         <select value={filterPercentInactive} onChange={this.handlePercentInactive}>
-                                <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
+                            <option value={1}>Last Month</option>
+                            <option value={2}>Last 2 Months</option>
+                            <option value={3}>Last 3 Months</option>
+                            <option value={4}>Last 4 Months</option>
+                            <option value={5}>Last 5 Months</option>
+                            <option value={6}>Last 6 Months</option>
                             <option value={24}>All Time</option>
                         </select>
                     </div>
