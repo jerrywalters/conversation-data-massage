@@ -6,7 +6,7 @@ const Dashboard = () => {
     function getCompaniesConversationsByMonth(companies, conversations, users, numMonths) {
         return companies
         .map((company)=>{
-            let numConversations = users.filter((user)=>{
+            const numConversations = users.filter((user)=>{
                 return user.company_id === company.id;
             })
             .map((user)=>{
@@ -49,7 +49,7 @@ const Dashboard = () => {
                 return user.company_id === company.id;
             })
             .map((user)=>{
-                let userConversationAmount = conversations.filter((conversation)=>{
+                const userConversationAmount = conversations.filter((conversation)=>{
                     return user.email === conversation.from;
                 }).length;
                 return {
@@ -63,8 +63,8 @@ const Dashboard = () => {
         });
     }
 
-    // get a list of the buddies in order of most conversations
-    let buddiesObj = users.map((user)=>{
+    // get an object of buddies with their number of conversations
+    const buddiesObj = users.map((user)=>{
         return conversations.filter((conversation)=>{
             return user.email === conversation.from;
         })
@@ -78,7 +78,7 @@ const Dashboard = () => {
         }, [])
         .map((recipient)=>{
             // turn this into a little function?
-            let buddy = [recipient, user.email].sort().join('%');
+            const buddy = [recipient, user.email].sort().join('%');
             return buddy;
         })
     })
@@ -86,19 +86,23 @@ const Dashboard = () => {
         return acc.concat(value)
     }, [])
     .reduce(groupByDuplicates, [])
-  
 
-    let buddiesArray = Object.keys(buddiesObj)
+    // converty buddiesObj to an array of buddies sorted by the most conversations
+    // might need to convert it into a string and get rid of value?
+    const buddiesArray = Object.keys(buddiesObj)
         .map(key => ({[key] : buddiesObj[key]}))
         .sort((a,b)=>{
             return Object.values(b)[0] - Object.values(a)[0]
-        });
+        })
+        .slice(0,5);
 
-    console.time('inactive')
+    console.log('buddies', buddiesArray)
+    
+    // get the percentage of inactive users by company in any given month
     function getInactiveUsersByMonth(companies, conversations, users, numMonths) {
         return companies
         .map((company)=>{
-            let userConversations = users.filter((user)=>{
+            const userConversations = users.filter((user)=>{
                 return user.company_id === company.id;
             })
             .map((user)=>{
@@ -112,21 +116,19 @@ const Dashboard = () => {
 
             return {
                 companyId: company.id,
-                percentInactive: getPercentage(numUsers, numInactive),
+                percentInactive: getPercentageAsInteger(numUsers, numInactive),
             };
         })
     }
 
-    function getPercentage(total, diff) {
-        return (diff/total)*100;
-    }
-
-    console.log('inactive', getInactiveUsersByMonth(companies, conversations, users, 4))
-    console.timeEnd('inactive')
     // takes duplicates and stores them in an object with the name as the key and a value of the number of duplicates
     function groupByDuplicates(acc, value) {
         !acc[value] ? acc[value] = 1 : acc[value] += 1
         return acc;
+    }
+    // gets percentage as integer
+    function getPercentageAsInteger(total, diff) {
+        return (diff/total)*100;
     }
 
     return (
