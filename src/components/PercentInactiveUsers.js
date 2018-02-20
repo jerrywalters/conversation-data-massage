@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {companies, users, conversations} from '../ConversationTest.json';
 
-const PercentInactiveUsers = () => {
+const PercentInactiveUsers = (props) => {
 
     // gets percentage as integer
     function getPercentageAsInteger(total, diff) {
@@ -33,7 +33,7 @@ const PercentInactiveUsers = () => {
         })
     }
 
-    let percentInactive = getInactiveUsersByMonth(companies, conversations, users, 6);
+    let percentInactive = getInactiveUsersByMonth(companies, conversations, users, props.numMonths);
     let percentInactiveList = percentInactive.map((company)=> {
         return (
             <li className="card">

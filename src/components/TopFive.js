@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {companies, users, conversations} from '../ConversationTest.json';
 
-const TopFive = () => {
+const TopFive = (props) => {
     function getCompaniesWithUsers(companies, conversations, users, numMonths) {
         return companies
         .map((company)=>{
@@ -44,7 +44,7 @@ const TopFive = () => {
         })
     }
 
-    let top5Companies = getTop5CompaniesByMonth(companies, conversations, users, 6);
+    let top5Companies = getTop5CompaniesByMonth(companies, conversations, users, props.numMonths);
     let top5List = top5Companies.map((company)=>{
         const name = company.name;
         const users = company.allUsers.map((user)=>{
