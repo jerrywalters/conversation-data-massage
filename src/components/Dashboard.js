@@ -15,8 +15,8 @@ class Dashboard extends Component {
         // set a very basic version of application state
         // I'd normally use redux to manage state, but here I only want to track the number of months we are filtering by with no intent to scale
         this.state = {
-            top5Filter: 24,
-            percentInactiveFilter: 24
+            top5Filter: 48,
+            percentInactiveFilter: 1
         };
     
         // Gotta bind 'this' for it to correctly reference the correct object in the callback
@@ -95,7 +95,7 @@ class Dashboard extends Component {
                                     <option value={4}>Last 4 Months</option>
                                     <option value={5}>Last 5 Months</option>
                                     <option value={6}>Last 6 Months</option>
-                                <   option value={24}>All Time</option>
+                                    <option value={48}>All Time</option>
                                 </select>
                             </div>
                         </div>
@@ -121,7 +121,7 @@ class Dashboard extends Component {
                                     <option value={4}>Last 4 Months</option>
                                     <option value={5}>Last 5 Months</option>
                                     <option value={6}>Last 6 Months</option>
-                                    <option value={24}>All Time</option>
+                                    <option value={48}>All Time</option>
                                 </select>
                             </div>
                         </div>

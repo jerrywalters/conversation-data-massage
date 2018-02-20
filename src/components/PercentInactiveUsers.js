@@ -14,7 +14,7 @@ const PercentInactiveUsers = (props) => {
     // get the percentage of inactive users by company in any given month
     function getInactiveUsersByMonth(companies, conversations, users, numMonths) {
         return companies
-        .map((company)=>{
+            .map((company)=>{
             // get only the users belonging to a given company
             const userConversations = users.filter((user)=>{
                 return user.company_id === company.id;
