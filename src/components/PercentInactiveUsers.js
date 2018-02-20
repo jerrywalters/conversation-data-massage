@@ -36,25 +36,29 @@ const PercentInactiveUsers = (props) => {
                 percentInactive: getPercentageAsInteger(numUsers, numInactive),
             };
         })
+        .sort((a,b)=> b.percentInactive - a.percentInactive)
     }
 
     let percentInactive = getInactiveUsersByMonth(companies, conversations, users, props.numMonths);
     // it'd be possible to turn this into a component and pass the company through as props, but unnecessary for now
+    // this could also honestly use a search filter
     let percentInactiveList = percentInactive.map((company)=> {
         return (
-            <li className="card">
-                <div className="card-content">
-                    <h1 className="title is-4 has-text-info">{company.name}</h1>
-                    <h2 className="title is-5">{company.percentInactive}</h2>
+            <div className="column is-one-fifth">
+                <div className="box">
+                    <div className="content">
+                        <h1 className="title is-size-6  has-text-grey-dark has-text-centered">{company.name}</h1>
+                        <p className="is-size-3 has-text-primary has-text-centered">{`${company.percentInactive}%`}</p>
+                    </div>
                 </div>
-            </li>
+            </div>
         )
     })
     
     return (
-        <ul className="tile is-ancestor">
+        <div className="columns" style={{'flex-wrap':'wrap'}}>
             {percentInactiveList}
-        </ul>
+        </div>
     )
 }
 

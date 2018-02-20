@@ -108,18 +108,23 @@ class Dashboard extends Component {
                     <h4 className="title has-text-centered">Best Buds</h4>
                     <Buddies />
                 </section>
-                <section className="section">
-                    <h4 className="title is-4">Percentage of Inactive Users by Company</h4>
-                    <div className="select">
-                        <select value={filterPercentInactive} onChange={this.handlePercentInactive}>
-                            <option value={1}>Last Month</option>
-                            <option value={2}>Last 2 Months</option>
-                            <option value={3}>Last 3 Months</option>
-                            <option value={4}>Last 4 Months</option>
-                            <option value={5}>Last 5 Months</option>
-                            <option value={6}>Last 6 Months</option>
-                            <option value={24}>All Time</option>
-                        </select>
+                <section className="section hero is-info is-bold">
+                    <h4 className="title has-text-centered">Percentage of Inactive Users by Company</h4>
+                    <div className="level">
+                        <div className="level-center">
+                            <p className="">Filter by:</p>
+                            <div className="select">
+                                <select value={filterPercentInactive} onChange={this.handlePercentInactive}>
+                                    <option value={1}>Last Month</option>
+                                    <option value={2}>Last 2 Months</option>
+                                    <option value={3}>Last 3 Months</option>
+                                    <option value={4}>Last 4 Months</option>
+                                    <option value={5}>Last 5 Months</option>
+                                    <option value={6}>Last 6 Months</option>
+                                    <option value={24}>All Time</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <PercentInactiveUsers 
                         numMonths={filterPercentInactive}/>

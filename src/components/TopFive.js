@@ -69,7 +69,7 @@ const TopFive = (props) => {
                     </div>
                     <div className="card-content content">
                         <h5 className="is-size-6 has-text-grey-dark">Top Users:</h5>
-                        <ol className="">
+                        <ol>
                             {users}
                         </ol>
                     </div>
