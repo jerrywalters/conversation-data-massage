@@ -14,19 +14,29 @@ class Dashboard extends Component {
         super(props);
         // set a very basic version of application state
         // I'd normally use redux to manage state, but here I only want to track the number of months we are filtering by with no intent to scale
-        this.state = {monthsFilter: 24};
+        this.state = {
+            top5Filter: 24,
+            percentInactiveFilter: 24
+        };
     
         // Gotta bind 'this' for it to correctly reference the correct object in the callback
-        this.handleChange = this.handleChange.bind(this);
+        this.handleTop5 = this.handleTop5.bind(this);
+        this.handlePercentInactive = this.handlePercentInactive.bind(this);
       }
 
-      handleChange(event) {
-        this.setState({monthsFilter: event.target.value});
+      handleTop5(event) {
+        this.setState({top5Filter: event.target.value});
       }
+
+      handlePercentInactive(event) {
+        this.setState({...this.state, percentInactiveFilter: event.target.value});
+      }
+      
 
     render() {
         // use this to pass state down thru props
-        const numMonths = this.state.monthsFilter;
+        const filterTop5 = this.state.top5Filter;
+        const filterPercentInactive = this.state.percentInactiveFilter;
 
         // this function takes in the JSON containing companies, conversations, users, and a number of months, and returns a new object containing the company name, id, and total number of conversations over n months
         function getCompaniesConversationsByMonth(companies, conversations, users, numMonths) {
@@ -58,31 +68,62 @@ class Dashboard extends Component {
             }, 0)
         }
 
-        let totalConversations = getTotalConversationsByMonth(companies, conversations, users, numMonths);
+        let totalConversations = getTotalConversationsByMonth(companies, conversations, users, filterTop5);
  
         return (
             <div>
-                <div className="select">
-                    <select value={numMonths} onChange={this.handleChange}>
-                        <option value={1}>1</option>
-                        <option value={2}>2</option>
-                        <option value={3}>3</option>
-                        <option value={4}>4</option>
-                        <option value={5}>5</option>
-                        <option value={6}>6</option>
-                        <option value={24}>All Time</option>
-                    </select>
-                </div>
-                <h4>total conversations:{totalConversations}</h4>
-                <h4>Most Active Companies:</h4>
-                <TopFive 
-                    numMonths={numMonths}
-                />
-                <h4>Best Buds</h4>
-                <Buddies />
-                <h4>Percentage of Inactive Users by Company</h4>
-                <PercentInactiveUsers 
-                    numMonths={numMonths}/>
+                <section className="section">
+                    <div className="level">
+                        <div class="level-item has-text-centered">
+                            <div>
+                            <p class="heading">{`Total Conversations | Last ${filterTop5} Months`}</p>
+                            <p class="title">{totalConversations}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section hero is-primary">
+                    <h4 className="title has-text-centered">Most Active Companies</h4>
+                    <div className="level">
+                        <div className="level-center">
+                            <p className="">Filter by:</p>
+                            <div className="select">
+                                <select value={filterTop5} onChange={this.handleTop5}>
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                                    <option value={4}>4</option>
+                                    <option value={5}>5</option>
+                                    <option value={6}>6</option>
+                                    <option value={24}>All Time</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <TopFive 
+                        numMonths={filterTop5}  
+                    />
+                </section>
+                <section className="section">
+                    <h4 className="title is-4">Best Buds</h4>
+                    <Buddies />
+                </section>
+                <section className="section">
+                    <h4 className="title is-4">Percentage of Inactive Users by Company</h4>
+                    <div className="select">
+                        <select value={filterPercentInactive} onChange={this.handlePercentInactive}>
+                                <option value={1}>1</option>
+                            <option value={2}>2</option>
+                            <option value={3}>3</option>
+                            <option value={4}>4</option>
+                            <option value={5}>5</option>
+                            <option value={6}>6</option>
+                            <option value={24}>All Time</option>
+                        </select>
+                    </div>
+                    <PercentInactiveUsers 
+                        numMonths={filterPercentInactive}/>
+                </section>
             </div>
         )
     }

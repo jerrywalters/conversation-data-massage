@@ -2,6 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import {companies, users, conversations} from '../ConversationTest.json';
 
+import 'bulma/css/bulma.css';
+
 const PercentInactiveUsers = (props) => {
 
     // gets percentage, then round it to nearest integer
@@ -42,7 +44,7 @@ const PercentInactiveUsers = (props) => {
         return (
             <li className="card">
                 <div className="card-content">
-                    <h1 className="title is-4">{company.name}</h1>
+                    <h1 className="title is-4 has-text-info">{company.name}</h1>
                     <h2 className="title is-5">{company.percentInactive}</h2>
                 </div>
             </li>
@@ -50,7 +52,7 @@ const PercentInactiveUsers = (props) => {
     })
     
     return (
-        <ul>
+        <ul className="tile is-ancestor">
             {percentInactiveList}
         </ul>
     )

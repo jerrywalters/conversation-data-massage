@@ -58,18 +58,24 @@ const TopFive = (props) => {
             return <li>{user.name}</li>
         })
         return (
-            <li>
-                {name}
-                <h5>Most Active Users:</h5>
-                <ol>
-                    {users}
-                </ol>
+            <li className="column is-one-fifth">
+                <div className="card">
+                    <div className="card-header">
+                        <h2 className="card-header-title">{name}</h2>
+                    </div>
+                    <div className="card-content content">
+                    <h5 className="title has-text-grey-dark">Most Active Users:</h5>
+                        <ol>
+                            {users}
+                        </ol>
+                    </div>
+                </div>
             </li>
             )
     })
 
     return (
-        <ol>
+        <ol className="columns">
             {top5List}
         </ol>
     )
